@@ -1,7 +1,10 @@
+import Navbar from "./components/Navbar"
 
 const App = () => {
   return (
-    <div className="text-3xl font-bold underline">App</div>
+    <div className="max-w-[370px] mx-auto">
+      <Navbar />
+    </div>
   )
 }
 
