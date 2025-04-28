@@ -5,11 +5,20 @@ import { useEffect, useState } from "react";
 import {collection, getDocs } from "firebase/firestore";
 import {db} from "./config/firebase";
 import ContactCard from "./components/ContactCard";
+import Modal from "./components/Modal";
 
  
 const App = () => {
 
   const [contacts, setContacts]= useState([]);
+  const [isOpen, setOpen]= useState(false);
+
+  const onOpen=()=>{
+    setOpen(true);
+  }
+  const onClose=()=>{
+    setOpen(false);
+  }
 
   useEffect(() => { 
 
@@ -24,6 +33,7 @@ const App = () => {
             ...doc.data(),
           };
         });
+
         setContacts(contactLists);
       }catch(error){
         console.log(error);
@@ -33,6 +43,7 @@ const App = () => {
 
   },[])
   return (
+    <>
     <div className="max-w-[370px] mx-auto px-4">
       <Navbar />
       <div className="flex gap-2">
@@ -40,14 +51,18 @@ const App = () => {
           <FiSearch className="text-white text-3xl absolute ml-1"/>
           <input type="text" className="pl-9 text-white flex-grow border bg-transparent border-white rounded-md h-10"/>
         </div>
-          <AiFillPlusCircle className="text-5xl cursor-pointer text-white"/>
+          <AiFillPlusCircle onClick={onOpen} className="text-5xl cursor-pointer text-white"/>
       </div>
-      <div className="mt-4 gap-3 flex-col">{
+      <div className="mt-4 gap-3 flex flex-col">{
         contacts.map((contact)=>(
         <ContactCard key={contact.id} contact={contact} />
       ))}
       </div>
     </div>
+    <Modal isOpen={isOpen} onClose={onClose}>
+      Hello
+    </Modal>
+    </>
   )
 }
 
