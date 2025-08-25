@@ -6,6 +6,7 @@ import {collection, getDocs } from "firebase/firestore";
 import {db} from "./config/firebase";
 import ContactCard from "./components/ContactCard";
 import Modal from "./components/Modal";
+import AddUpdateContact from "./components/AddUpdateContact";
 
  
 const App = () => {
@@ -48,8 +49,8 @@ const App = () => {
       <Navbar />
       <div className="flex gap-2">
         <div className="flex relative items-center flex-grow">
-          <FiSearch className="text-white text-3xl absolute ml-1"/>
-          <input type="text" className="pl-9 text-white flex-grow border bg-transparent border-white rounded-md h-10"/>
+          <FiSearch className="text-white text-2xl absolute ml-2"/>
+          <input type="text" className="pl-9 text-white flex-grow border bg-transparent border-white rounded-md h-11"/>
         </div>
           <AiFillPlusCircle onClick={onOpen} className="text-5xl cursor-pointer text-white"/>
       </div>
@@ -59,11 +60,9 @@ const App = () => {
       ))}
       </div>
     </div>
-    <Modal isOpen={isOpen} onClose={onClose}>
-      Hello
-    </Modal>
+    <AddUpdateContact isOpen={isOpen} onClose={onClose}/>
     </>
   )
 }
 
-export default App 
+export default App  

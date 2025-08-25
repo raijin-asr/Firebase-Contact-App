@@ -1,7 +1,8 @@
+import { createPortal } from "react-dom";
 import {AiOutlineClose} from "react-icons/ai";
 
 const Modal = ({onClose, isOpen, children}) => {
-  return (
+  return createPortal(
     <>
     {isOpen && (
       <>
@@ -9,13 +10,14 @@ const Modal = ({onClose, isOpen, children}) => {
             <div className="flex justify-end">
                 <AiOutlineClose onClick={onClose} className="text-2xl self-end"/>
             </div>
+            {children}
         </div>
         <div onClick={onClose} className="absolute top-0 z-40 backdrop-blur h-screen w-screen"/>
         </>
-    )}
-    
-    </>
-)
-}
+      )}
+    </>,
+    document.getElementById("modal-root")
+  );
+};
 
 export default Modal
