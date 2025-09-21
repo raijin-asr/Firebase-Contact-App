@@ -7,19 +7,13 @@ import {db} from "./config/firebase";
 import ContactCard from "./components/ContactCard";
 import Modal from "./components/Modal";
 import AddUpdateContact from "./components/AddUpdateContact";
+import useDisclose from "./hooks/useDisclose";
 
  
 const App = () => {
 
   const [contacts, setContacts]= useState([]);
-  const [isOpen, setOpen]= useState(false);
-
-  const onOpen=()=>{
-    setOpen(true);
-  }
-  const onClose=()=>{
-    setOpen(false);
-  }
+  const [isOpen, onClose, onOpen]= useDisclose();
 
   useEffect(() => { 
 

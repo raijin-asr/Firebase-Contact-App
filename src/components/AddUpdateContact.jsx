@@ -4,7 +4,7 @@ import { Formik, Field, Form } from 'formik'
 import {collection} from "firebase/firebase";
 import {db} from "../config/firebase";
 
-const AddUpdateContact = ({isOpen, onClose}) => {
+const AddUpdateContact = ({isOpen, onClose, isUpdate, contact}) => {
 
     const addContact = async (contact) =>{
         try{
@@ -18,7 +18,10 @@ const AddUpdateContact = ({isOpen, onClose}) => {
     <div>
         <Modal isOpen={isOpen} onClose={onClose}>
             <Formik
-                initialValues={{
+                initialValues={isUpdate ? {
+                    name: contact.name,
+                    email: contact.email,
+                } :{
                     name: "",
                     email: "",
                 }}
@@ -36,7 +39,7 @@ const AddUpdateContact = ({isOpen, onClose}) => {
                         <label htmlFor='name'>Email</label>
                         <Field name="email" className="h-10 border"/>
                     </div>
-                    <button className='bg-green px-2 py-1 border self-end'>Add</button>
+                    <button className='bg-green px-2 py-1 border self-end'>{isUpdate? "Update": "Add"}</button>
                 </Form>
             </Formik>
          </Modal>
