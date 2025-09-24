@@ -10,10 +10,20 @@ const AddUpdateContact = ({isOpen, onClose, isUpdate, contact}) => {
         try{
             const contactRef= collection(db,"contacts");
             await addDoc(contactRef, contact);
+            onClose();
         }catch(error){
             console.log(error);
         }
-    }
+    };
+    const updateContact = async (contact, id) =>{
+        try{
+            const contactRef= doc(db,"contacts", id);
+            await updateDoc(contactRef, contact);
+            onClose();
+        }catch(error){
+            console.log(error);
+        }
+    };
   return (
     <div>
         <Modal isOpen={isOpen} onClose={onClose}>
@@ -27,6 +37,7 @@ const AddUpdateContact = ({isOpen, onClose, isUpdate, contact}) => {
                 }}
                 onSubmit={(values) => {
                     console.log(values);
+                    isUpdate? updateContact(values, contact.id):
                     addContact(values);
                 }}
             >

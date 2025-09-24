@@ -2,7 +2,7 @@ import Navbar from "./components/Navbar";
 import {FiSearch} from "react-icons/fi";
 import {AiFillPlusCircle} from "react-icons/ai";
 import { useEffect, useState } from "react";
-import {collection, getDocs } from "firebase/firestore";
+import {collection, getDocs, onSnapshot } from "firebase/firestore";
 import {db} from "./config/firebase";
 import ContactCard from "./components/ContactCard";
 import Modal from "./components/Modal";
@@ -21,15 +21,20 @@ const App = () => {
 
       try{
         const contactsRef = collection(db, "contacts");
-        const contactsSnapshot = await getDocs(contactsRef);
-        const contactLists= contactsSnapshot.docs.map((doc)=>{
-          return {
-            id:doc.id,
-            ...doc.data(),
-          };
-        });
 
-        setContacts(contactLists);
+        //real time refresh
+        onSnapshot(contactsRef, (snapshot) =>{
+            const contactLists= snapshot.docs.map((doc)=>{
+                      return {
+                        id:doc.id,
+                        ...doc.data(),
+                      };
+                    });
+
+                    setContacts(contactLists);
+                    return contactLists;
+        }) 
+
       }catch(error){
         console.log(error);
       }
