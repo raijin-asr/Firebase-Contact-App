@@ -8,7 +8,8 @@ import ContactCard from "./components/ContactCard";
 import Modal from "./components/Modal";
 import AddUpdateContact from "./components/AddUpdateContact";
 import useDisclose from "./hooks/useDisclose";
-
+import {ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
  
 const App = () => {
 
@@ -42,6 +43,32 @@ const App = () => {
     getContacts();
 
   },[])
+
+  const searchFilter =(e) =>{
+    const value= e.target.value;
+    try{
+        const contactsRef = collection(db, "contacts");
+
+        //real time refresh
+        onSnapshot(contactsRef, (snapshot) =>{
+            const contactLists= snapshot.docs.map((doc)=>{
+                      return {
+                        id:doc.id,
+                        ...doc.data(),
+                      };
+                    });
+                    const filteredContacts = contactLists.filter(
+                      (contact)=> contact.name.toLowerCase().includes(value.toLowerCase())
+                    );
+                    setContacts(filteredContacts);
+
+                    return filteredContacts;
+        }) 
+
+      }catch(error){
+        console.log(error);
+      }
+  }
   return (
     <>
     <div className="max-w-[370px] mx-auto px-4">
@@ -49,7 +76,10 @@ const App = () => {
       <div className="flex gap-2">
         <div className="flex relative items-center flex-grow">
           <FiSearch className="text-white text-2xl absolute ml-2"/>
-          <input type="text" className="pl-9 text-white flex-grow border bg-transparent border-white rounded-md h-11"/>
+          <input 
+            onChange={searchFilter}
+            type="text" 
+            className="pl-9 text-white flex-grow border bg-transparent border-white rounded-md h-11"/>
         </div>
           <AiFillPlusCircle onClick={onOpen} className="text-5xl cursor-pointer text-white"/>
       </div>
@@ -60,6 +90,7 @@ const App = () => {
       </div>
     </div>
     <AddUpdateContact isOpen={isOpen} onClose={onClose}/>
+    <ToastContainer position="bottom-center"/>
     </>
   )
 }

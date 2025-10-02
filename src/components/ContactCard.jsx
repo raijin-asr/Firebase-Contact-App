@@ -2,6 +2,7 @@ import { HiOutlineUserCircle } from 'react-icons/hi';
 import { IoMdTrash } from 'react-icons/io';
 import { RiEditCircleLine } from 'react-icons/ri';
 import AddUpdateContact from './AddUpdateContact';
+import {toast} from "react-toastify";
 
 const ContactCard = ({contact}) => {
   const [isOpen, onClose, onOpen]= useDisclose();
@@ -9,6 +10,7 @@ const ContactCard = ({contact}) => {
   const deleteContact = async (contact) =>{
           try{
               await deleteDoc(doc(db, "contacts",id));
+              toast.success("Contact deleted successfully!");
           }catch(error){
               console.log(error);
           }
