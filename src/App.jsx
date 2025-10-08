@@ -10,6 +10,7 @@ import AddUpdateContact from "./components/AddUpdateContact";
 import useDisclose from "./hooks/useDisclose";
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import NotFoundContact from "./components/NoContactFound";
  
 const App = () => {
 
@@ -83,10 +84,14 @@ const App = () => {
         </div>
           <AiFillPlusCircle onClick={onOpen} className="text-5xl cursor-pointer text-white"/>
       </div>
-      <div className="mt-4 gap-3 flex flex-col">{
+      <div className="mt-4 gap-3 flex flex-col">
+        {contacts.length <= 0 ? (
+          <NoContactFound/>
+        ): (
         contacts.map((contact)=>(
         <ContactCard key={contact.id} contact={contact} />
-      ))}
+      ))
+    )}
       </div>
     </div>
     <AddUpdateContact isOpen={isOpen} onClose={onClose}/>
